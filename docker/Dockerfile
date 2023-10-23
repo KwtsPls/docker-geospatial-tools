@@ -1,16 +1,16 @@
-############################
-# Dockerfile for Strabon   #
-# RK-team                  #
-# Madgik                   #
-# DI @ UoA                 #
-#                          #
-# java8                    #
-# maven 3.6.3              #
-# git 1.9.1                #
-# tomcat 9.0.71            #
-# postgres 12.13           #
-# postgis 3.3.2            #
-############################
+#####################################
+# Dockerfile for Geospatial Tools   #
+# AI-team                           #
+# Madgik                            #
+# DI @ UoA                          #
+#                                   #
+# java8                             #
+# maven 3.6.3                       #
+# git 1.9.1                         #
+# tomcat 9.0.71                     #
+# postgres 12.13                    #
+# postgis 3.3.2                     #
+#####################################
 
 
 FROM ubuntu:20.04
@@ -26,6 +26,7 @@ ENV TOMCAT_MINOR_VERSION 9.0.71
 RUN apt-get update \
  && apt-get install -y \
     wget \
+    unzip \
     openjdk-8-jdk \
     curl \
     git \
@@ -35,9 +36,9 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 #SET UP JAVA 8
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 RUN export JAVA_HOME
-RUN PATH="JAVA_HOME/bin:$PATH" \
+RUN PATH="$JAVA_HOME/bin:$PATH" \
  && export PATH
 
 #DOWNLOAD AND INSTALL maven 3.6.3
@@ -102,7 +103,7 @@ RUN git clone https://github.com/KwtsPls/Sextant.git \
  && cd Sextant/JerseyServer \
  && mvn clean package
 
-RUN cp /Sextant/JerseyServer/Sextant-3.0.0.war /tomcat/webapps/Sextant.war \
+RUN cp /Sextant/JerseyServer/target/Sextant-3.0.0.war /tomcat/webapps/Sextant.war \
  && rm -rf /Sextant
 
 # DOWNLOAD geotriples
