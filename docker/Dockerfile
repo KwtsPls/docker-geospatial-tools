@@ -35,12 +35,6 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-#SET UP JAVA 8
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-RUN export JAVA_HOME
-RUN PATH="$JAVA_HOME/bin:$PATH" \
- && export PATH
-
 #DOWNLOAD AND INSTALL maven 3.6.3
 RUN wget https://mirrors.estointernet.in/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
      && tar -xvf apache-maven-3.6.3-bin.tar.gz \
@@ -62,6 +56,15 @@ RUN apt-get update \
     postgresql-12-postgis-3 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
+
+#DELETE JAVA 11
+RUN apt purge openjdk-11-* -y
+
+#SET UP JAVA 8
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+RUN export JAVA_HOME
+RUN PATH="$JAVA_HOME/bin:$PATH" \
+ && export PATH
 
 ADD initdb.sh enable_remote.sh /usr/local/bin/
 
